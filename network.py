@@ -1,7 +1,6 @@
 """
 network.py
-~~~~~~~~~~
-
+~~~~~~~~~
 A module to implement the stochastic gradient descent learning
 algorithm for a feedforward neural network.  Gradients are calculated
 using backpropagation.  Note that I have focused on making the code
@@ -137,8 +136,7 @@ class Network(object):
             activations.append(activation)    #Añadimos elementos a activations
 
         # backward pass
-        delta = self.cost_derivative(activations[-1], y) * \      
-            sigmoid_prime(zs[-1])             #Calculamos la primer delta
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])  #Calculamos la primer delta
         nabla_b[-1] = delta                   #El último dato de nabla_b lo cambiamos por delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose()) #Cambiamos el último dato de w, usando la nueva b
 
