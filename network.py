@@ -52,20 +52,22 @@ class Network(object):
         
             #------Ejemplo para sizes =[2,3,1]-------
         
-            #self.biases = [array_0([ [w^{1}_{11}, w^{1}_{12}],
-            #                         [w^{1}_{21}, w^{1}_{22}],
-            #                         [w^{1}_{31}, w^{1}_{32}]  ]),     "Estas son las w's que unen la capa 
+            #self.weights = [array_0([ [w^{1}_{11}, w^{1}_{12}],
+            #                          [w^{1}_{21}, w^{1}_{22}],
+            #                          [w^{1}_{31}, w^{1}_{32}]  ]),     "Estas son las w's que unen la capa 
             #                                                                      input y la intermedia"
         
             #               array_1([ [w^{2}_{11},w^{2}_{12},w^{2}_{13}]  ]) ]  "Estas son las w's que unen
             #                                                                   la capa intermedia y output"            
 
     def feedforward(self, a):
-        """Return the output of the network if ``a`` is input."""
+        """Return the output of the network if ``a`` is input.""" #La entrada 'a' debe ser un vector columna.
         for b, w in zip(self.biases, self.weights): #Tomamos un valor de self.biases y self.weights (son arrays)
-            a = sigmoid(np.dot(w, a)+b) #Hace el producto punto entre w y a y lo evalua en la sigmoide.
-                                        #Aquí debería de haber un problema con a, ya que w no tiene las mismas 
-                                        #Dimensiones siempre entonces el producto debe fallar
+            a = sigmoid(np.dot(w, a)+b) # a^{l}_{j} = \sigma( w^{l}_{jk} * a^{l-1}_{k} + b^{l}_{j}  ) suma implicita en k
+                                        #Hace el producto matricial entre las entradas de la capa input y w, despues
+                                        # lo evalua en la sigmoide creando una nueva a, a^{l}_{j}
+                                        # después se vuelve a calcular lo mismo pero para la siguiente a 
+                                        #El ciclo se repite
         return a #Se crea un array con valores de la sigmoide para cada w
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
