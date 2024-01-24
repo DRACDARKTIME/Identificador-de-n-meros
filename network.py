@@ -61,14 +61,15 @@ class Network(object):
             #                                                                   la capa intermedia y output"            
 
     def feedforward(self, a):
-        """Return the output of the network if ``a`` is input.""" #La entrada 'a' debe ser un vector columna.
+        """Return the output of the network if ``a`` is input.""" #La entrada 'a' debe ser un vector columna, de la misma
+                                                                  # longitud que el primer valor de size.
         for b, w in zip(self.biases, self.weights): #Tomamos un valor de self.biases y self.weights (son arrays)
             a = sigmoid(np.dot(w, a)+b) # a^{l}_{j} = \sigma( w^{l}_{jk} * a^{l-1}_{k} + b^{l}_{j}  ) suma implicita en k
-                                        #Hace el producto matricial entre las entradas de la capa input y w, despues
-                                        # lo evalua en la sigmoide creando una nueva a, a^{l}_{j}
-                                        # después se vuelve a calcular lo mismo pero para la siguiente a 
-                                        #El ciclo se repite
-        return a #Se crea un array con valores de la sigmoide para cada w
+                                        #Hace el producto matricial entre las entradas de la capa input a^{0} y w^{1}, despues
+                                        # lo evalua en la sigmoide creando una nueva a, a^{1} (es un array)
+                                        # después se vuelve a calcular lo mismo pero para la siguiente a^{2}
+                                        # El ciclo se repite hasta tener la activación final
+        return a #Regresa la activación final de la red.
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):  #Stochastic Gradient Descent
