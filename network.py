@@ -72,7 +72,7 @@ class Network(object):
         return a #Regresa la activación final de la red.
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None):  #Stochastic Gradient Descent
+            test_data=None):  #-------Stochastic Gradient Descent-------
                               #self            --- Llamamos a nuestra clase 'self'
                               #training_data   --- Una lista de tuplas (x,y) donde ('espectativa','realidad') xd  
                               #epochs          --- Ciclos a repetir
@@ -102,16 +102,16 @@ class Network(object):
                                                        #De tamaño = n/mini_batch_size
                                                        #mini_batch_size es el step de 0 a n
 
-            for mini_batch in mini_batches:             #mini_batch es un dato de mini_batches
+            for mini_batch in mini_batches:             #mini_batch es un elemento de mini_batches
                 self.update_mini_batch(mini_batch, eta) #Llamamos a la función update_mini_batch (definida abajo)
-                                                        #Donde guardamos (mini_batch, eta)
+                                                        #La cual nos mueve un poco los pesos y los biases
             if test_data:
                 print("Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test)) #Imprimimos el número de época
-                                                          #llama el valor de evaluate(función definida abajo)
-                                                          #longitud de test_data
+                    j, self.evaluate(test_data), n_test)) #Imprimimos el número de época en que estamos,
+                                                          #el valor de evaluate(función definida abajo) y
+                                                          #la longitud de test_data
             else:
-                print("Epoch {0} complete".format(j))     #Solo se imprime la epoca
+                print("Epoch {0} complete".format(j))     #Solo se imprime la epoca en que se está
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
@@ -121,7 +121,7 @@ class Network(object):
         nabla_b = [np.zeros(b.shape) for b in self.biases]     #Crea una lista igual a self.biases pero con puros ceros
         nabla_w = [np.zeros(w.shape) for w in self.weights]    #Crea una lista igual a self.weights pero con puros ceros
         for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y)            #La función backprop(x,y) regresa dos valores
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y)            #Regresa el gradiente de la función de costo
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)] #Ahora nabla_b está llena de la suma de los valores
                                                                           #nabla_b + delta_nabla_b
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)] #Ahora nabla_w está llena de la suma de los valores
@@ -147,6 +147,8 @@ class Network(object):
             zs.append(z)                      #Añadimos elementos a zs
             activation = sigmoid(z)
             activations.append(activation)    #Añadimos elementos a activations
+            #zs es una lista donde guardamos todas las z's de nuestra red
+            #activations es una lista donde guardamos todas las a's de nuestra red
 
         # backward pass
         delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])  #Calculamos la primer delta
@@ -159,14 +161,18 @@ class Network(object):
         # second-last layer, and so on.  It's a renumbering of the
         # scheme in the book, used here to take advantage of the fact
         # that Python can use negative indices in lists.
-
+        
+        #Es lo mismo que arriba pero ya para todos los valores
         for l in range(2, self.num_layers):
             z = zs[-l]
             sp = sigmoid_prime(z)
-            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp   
+        #       \delta^{l-1} = [ (w^{l})^{T} * \delta^{l} ]*\sigma^{'}(z^{l-1})
             nabla_b[-l] = delta
+        #       \frac{\partial C}{\partial b^{l}_{j}} = \delta^{l}_{j}
             nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
-        return (nabla_b, nabla_w)    #Hemos actualizado los valores de nabla_b y nabla_w
+        #       \frac{\partial C}{\partial w^{l}_{jk}} = a^{l-1}_{k}*\delta^{l}_{j}
+        return (nabla_b, nabla_w)    #Hemos actualizado todos los valores de nabla_b y nabla_w
 
     def evaluate(self, test_data):
         """Return the number of test inputs for which the neural
