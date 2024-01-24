@@ -35,20 +35,30 @@ class Network(object):
         self.sizes = sizes #Creamos un atributo 'sizes' a self 
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]] 
             #Creamos un atributo 'biases' a self, donde asignamos una lista
-            #Esta lista tiene como elementos a arrays, cada array pertenece a una capa de la red
-            #Cada array tiene una 'b' random para cada neurona   
+            #Esta lista tiene como elementos a arrays, cada array pertenece a una capa de la red, sin contar la capa de input
+            #Cada array tiene una 'b' random para cada neurona de cada capa  
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
-            #Ahora asignamos un peso w aleatorio entre cada par de neuronas 
+            #Ahora asignamos un peso w aleatorio --entre cada par-- de neuronas 
             #Se crea un primer array con los pesos que unen a cada neurona entre la capa uno y dos
                 #En este array hay otros array con n valores, esos valores corresponden a los w's
-                #que tiene cada nuerona de la segunda capa a la primer capa. 
+                #Que tiene cada nuerona de la segunda capa a la primer capa.
             #Se crea un segundo array con los pesos que unen a cada neurona entre la capa dos y tres
-                #El ciclo se repite   
-                #         .
-                #         .
-                #         .
-                #Hasta que se alcanza a la última capa.
+            #El ciclo se repite   
+            #         .
+            #         .
+            #         .
+            #Hasta que se alcanza a la última capa.
+        
+            #------Ejemplo para sizes =[2,3,1]-------
+        
+            #self.biases = [array_0([ [w^{1}_{11}, w^{1}_{12}],
+            #                         [w^{1}_{21}, w^{1}_{22}],
+            #                         [w^{1}_{31}, w^{1}_{32}]  ]),     "Estas son las w's que unen la capa 
+            #                                                                      input y la intermedia"
+        
+            #               array_1([ [w^{2}_{11},w^{2}_{12},w^{2}_{13}]  ]) ]  "Estas son las w's que unen
+            #                                                                   la capa intermedia y output"            
 
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input."""
