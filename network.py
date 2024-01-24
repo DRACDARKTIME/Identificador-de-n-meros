@@ -35,7 +35,8 @@ class Network(object):
         self.sizes = sizes #Creamos un atributo 'sizes' a self 
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]] 
             #Creamos un atributo 'biases' a self, donde asignamos una lista
-            #Esta lista tiene como elementos a arrays, cada array pertenece a una capa de la red, sin contar la capa de input
+            #Esta lista tiene como elementos a arrays,
+                #cada array pertenece a una capa de la red, sin contar la capa de input
             #Cada array tiene una 'b' random para cada neurona de cada capa  
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
@@ -62,14 +63,14 @@ class Network(object):
 
     def feedforward(self, a):
         """Return the output of the network if ``a`` is input.""" #La entrada 'a' debe ser un vector columna, de la misma
-                                                                  # longitud que el primer valor de size.
+                                                                    #longitud que el primer valor de size.
         for b, w in zip(self.biases, self.weights): #Tomamos un valor de self.biases y self.weights (son arrays)
-            a = sigmoid(np.dot(w, a)+b) # a^{l}_{j} = \sigma( w^{l}_{jk} * a^{l-1}_{k} + b^{l}_{j}  ) suma implicita en k
+            a = sigmoid(np.dot(w, a)+b) #a^{l}_{j} = \sigma( w^{l}_{jk} * a^{l-1}_{k} + b^{l}_{j}  ) suma implicita en k
                                         #Hace el producto matricial entre las entradas de la capa input a^{0} y w^{1}, despues
-                                        # lo evalua en la sigmoide creando una nueva a, a^{1} (es un array)
-                                        # después se vuelve a calcular lo mismo pero para la siguiente a^{2}
-                                        # El ciclo se repite hasta tener la activación final
-        return a #Regresa la activación final de la red.
+                                            #lo evalua en la sigmoide creando una nueva a, a^{1} (es un array)
+                                            #después se vuelve a calcular lo mismo pero para la siguiente a^{2}
+                                        #El ciclo se repite hasta tener la activación final
+        return a                        #Regresa la activación final de la red.
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):  #-------Stochastic Gradient Descent-------
@@ -138,10 +139,10 @@ class Network(object):
         to ``self.biases`` and ``self.weights``."""
         nabla_b = [np.zeros(b.shape) for b in self.biases]       #Crea una lista igual a self.biases pero con puros ceros
         nabla_w = [np.zeros(w.shape) for w in self.weights]      #Crea una lista igual a self.weights pero con puros ceros
-        # feedforward
-        activation = x                                           #Input
-        activations = [x] # list to store all the activations, layer by layer  Valores de sigma
-        zs = [] # list to store all the z vectors, layer by layer              
+        #-----feedforward------
+        activation = x    #Input
+        activations = [x] #list to store all the activations, layer by layer  Valores de sigma
+        zs = []           #list to store all the z vectors, layer by layer              
         for b, w in zip(self.biases, self.weights):     
             z = np.dot(w, activation)+b                   
             zs.append(z)                      #Añadimos elementos a zs
@@ -150,10 +151,12 @@ class Network(object):
             #zs es una lista donde guardamos todas las z's de nuestra red
             #activations es una lista donde guardamos todas las a's de nuestra red
 
-        # backward pass
-        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])  #Calculamos la primer delta
-        nabla_b[-1] = delta                   #El último dato de nabla_b lo cambiamos por delta
-        nabla_w[-1] = np.dot(delta, activations[-2].transpose()) #Cambiamos el último dato de w, usando la nueva b
+        #-----backward pass-----
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])  #Calculamos la primer delta                                                                                  
+        nabla_b[-1] = delta                                                       #El último dato de nabla_b 
+                                                                                  #lo cambiamos por delta
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose())                  #Cambiamos el último dato de w,
+                                                                                  #usando la nueva b
 
         # Note that the variable l in the loop below is used a little
         # differently to the notation in Chapter 2 of the book.  Here,
@@ -180,12 +183,12 @@ class Network(object):
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
         test_results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in test_data]           # Es una lista de tuplas (f,y) donde f es 
-                                                           # el indice de x de la primer activación más grande.
-                                                           # y es el indice correcto.
+                        for (x, y) in test_data]           #Es una lista de tuplas (f,y) donde f es 
+                                                           #el indice de x de la primer activación más grande.
+                                                           #y es el indice correcto.
         
         return sum(int(x == y) for (x, y) in test_results) #Nos da la cantidad de datos que coincidieron, 
-                                                           #Simplemento compara los indices y cuanta los que sí coinciden.
+                                                           #Simplemento compara los indices y cuenta los que sí coinciden.
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
