@@ -121,7 +121,7 @@ class Network(object):
         nabla_b = [np.zeros(b.shape) for b in self.biases]     #Crea una lista igual a self.biases pero con puros ceros
         nabla_w = [np.zeros(w.shape) for w in self.weights]    #Crea una lista igual a self.weights pero con puros ceros
         for x, y in mini_batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x, y)            #Regresa el gradiente de la función de costo
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y)            #Regresa el gradiente de la función de costo respecto de b y de a
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)] #Ahora nabla_b está llena de la suma de los valores
                                                                           #nabla_b + delta_nabla_b
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)] #Ahora nabla_w está llena de la suma de los valores
@@ -180,8 +180,12 @@ class Network(object):
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
         test_results = [(np.argmax(self.feedforward(x)), y)
-                        for (x, y) in test_data]    #Tomamos los máximos de las activaciones
-        return sum(int(x == y) for (x, y) in test_results) #Vemos los resultados que coincidieron y los sumamos
+                        for (x, y) in test_data]           # Es una lista de tuplas (f,y) donde f es 
+                                                           # el indice de x de la primer activación más grande.
+                                                           # y es el indice correcto.
+        
+        return sum(int(x == y) for (x, y) in test_results) #Nos da la cantidad de datos que coincidieron, 
+                                                           #Simplemento compara los indices y cuanta los que sí coinciden.
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
