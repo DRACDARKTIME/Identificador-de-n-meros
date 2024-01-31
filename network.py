@@ -152,11 +152,11 @@ class Network(object):
             #activations es una lista donde guardamos todas las a's de nuestra red
 
         #-----backward pass-----
-        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])  #Calculamos la ultima delta                                                                                  
-        nabla_b[-1] = delta                                                       #El último dato de nabla_b 
-                                                                                  #lo cambiamos por delta
-        nabla_w[-1] = np.dot(delta, activations[-2].transpose())                  #Cambiamos el último dato de w,
-                                                                                  #usando la nueva b
+        delta = self.cost_derivative(activations[-1], y)                #Calculamos la ultima delta   $\delta^{L} = a^{L} - y$                                                                               
+        nabla_b[-1] = delta                                             #El último dato de nabla_b 
+                                                                        #lo cambiamos por delta
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose())        #Cambiamos el último dato de w,
+                                                                        #usando la nueva b
 
         # Note that the variable l in the loop below is used a little
         # differently to the notation in Chapter 2 of the book.  Here,
@@ -190,10 +190,10 @@ class Network(object):
         return sum(int(x == y) for (x, y) in test_results) #Nos da la cantidad de datos que coincidieron, 
                                                            #Simplemento compara los indices y cuenta los que sí coinciden.
 
-    def cost_derivative(self, output_activations, y):
+    def delta(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
-        return (output_activations-y)  #Esta es la derivada de C_x respecto de $a^{L}$
+        return (output_activations-y)  #Esta es la ultima delta usando Cross-Entropy
 
 #------------ Miscellaneous functions ------------#
 
