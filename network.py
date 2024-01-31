@@ -152,7 +152,8 @@ class Network(object):
             #activations es una lista donde guardamos todas las a's de nuestra red
 
         #-----backward pass-----
-        delta = self.cost_derivative(activations[-1], y)                #Calculamos la ultima delta   $\delta^{L} = a^{L} - y$                                                                               
+        delta = self.cost_derivative(activations[-1], y)                #Calculamos la ultima delta usando Cross-entropy
+                                                                        #  $\delta^{L} = a^{L} - y$                                                                               
         nabla_b[-1] = delta                                             #El último dato de nabla_b 
                                                                         #lo cambiamos por delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())        #Cambiamos el último dato de w,
