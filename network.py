@@ -190,7 +190,7 @@ class Network(object):
         return sum(int(x == y) for (x, y) in test_results) #Nos da la cantidad de datos que coincidieron, 
                                                            #Simplemento compara los indices y cuenta los que sí coinciden.
 
-    def delta(self, output_activations, y):
+    def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
         return (output_activations-y)  #Esta es la ultima delta usando Cross-Entropy
