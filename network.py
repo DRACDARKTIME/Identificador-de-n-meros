@@ -90,20 +90,19 @@ class Network(object):
         v_w=np.zeros_like(self.weights)
         delta_nabla_b, delta_nabla_w = self.backprop(x, y)
 
-        #Para b's
         for j in range(1000):
+        #Para b's
             m_b = beta_1*m_b + (1-beta_1)*delta_nabla_b
             v_b = beta_2*v_b + (1-beta_2)*delta_nabla_b**2
             m_b_hat = m_b/(1-beta_1**t)
             v_b_hat = v_b/(1-beta_2**t)
-            theta_b = theta_b - eta*m_b_hat/(np.sqrt(v_b_hat)+epsilon) 
+            theta_b = theta_b - eta*m_b_hat/(np.sqrt(v_b_hat)+epsilon) #Estas son las nuevas b's
         #Para w's    
-        for j in range(1000):
             m_w = beta_1*m_w + (1-beta_1)*delta_nabla_w
             v_w = beta_2*v_w + (1-beta_2)*delta_nabla_w**2
             m_w_hat = m_w/(1-beta_1**t)
             v_w_hat = v_b/(1-beta_2**t)
-            theta_w = theta_w - eta*m_w_hat/(np.sqrt(v_w_hat)+epsilon) 
+            theta_w = theta_w - eta*m_w_hat/(np.sqrt(v_w_hat)+epsilon) #Estos son los nuevos w's
 
         if test_data:
             test_data = list(test_data) #La convertimos en lista
