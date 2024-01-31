@@ -16,7 +16,7 @@ plt.imshow(im) # la visualizamos
 plt.show()
 v=np.reshape(im,(784,1)) #La reacomodamos como matriz de (784,1) para poderla meter a la red
 
-imtest=imread('Numero3.jpg') #Leemos nuestra imagen
+imtest=imread('screenshots/Numero3.jpg') #Leemos nuestra imagen
 plt.imshow(imtest) #La visualizamos
 imtest=np.reshape(imtest,(784,3)) # La convertimos en vector
 #Convertimos a blanco y negro la imagen:
