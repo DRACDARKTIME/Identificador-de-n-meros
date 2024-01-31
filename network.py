@@ -74,6 +74,7 @@ class Network(object):
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):  #-------Stochastic Gradient Descent-------
+                                #aaaaaaaaaaaaaaaaah
                               #self            --- Llamamos a nuestra clase 'self'
                               #training_data   --- Una lista de tuplas (x,y) donde ('espectativa','realidad') xd  
                               #epochs          --- Ciclos a repetir
