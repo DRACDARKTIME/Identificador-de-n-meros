@@ -71,24 +71,40 @@ class Network(object):
                                             #después se vuelve a calcular lo mismo pero para la siguiente a^{2}
                                         #El ciclo se repite hasta tener la activación final
         return a                        #Regresa la activación final de la red.
+#-----------------------No se modifica lo de arriba (en Adam)---------------------
 
-    def SGD(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None):  #-------Stochastic Gradient Descent-------
-                                #aaaaaaaaaaaaaaaaah
+    def Adam(self, training_data, epochs, mini_batch_size, eta,
+            test_data=None, beta_1=0.9, beta_2=0.95):  #-------Stochastic Gradient Descent-------
                               #self            --- Llamamos a nuestra clase 'self'
                               #training_data   --- Una lista de tuplas (x,y) donde ('espectativa','realidad') xd  
                               #epochs          --- Ciclos a repetir
                               #mini_batch_size --- Es el paso que hay en la selección de los datos "step"
                               #eta             --- Ritmo de aprendizaje
                               #test_data       --- Información de prueba  
-        """Train the neural network using mini-batch stochastic
-        gradient descent.  The ``training_data`` is a list of tuples
-        ``(x, y)`` representing the training inputs and the desired
-        outputs.  The other non-optional parameters are
-        self-explanatory.  If ``test_data`` is provided then the
-        network will be evaluated against the test data after each
-        epoch, and partial progress printed out.  This is useful for
-        tracking progress, but slows things down substantially."""
+        epsilon = 1e-8
+        t=0
+        g=0
+        m_b=np.zeros_like(self.biases)
+        v_b=np.zeros_like(self.biases)
+        m_w=np.zeros_like(self.weights)
+        v_w=np.zeros_like(self.weights)
+        delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+
+        #Para b's
+        for j in range(1000):
+            m_b = beta_1*m_b + (1-beta_1)*delta_nabla_b
+            v_b = beta_2*v_b + (1-beta_2)*delta_nabla_b**2
+            m_b_hat = m_b/(1-beta_1**t)
+            v_b_hat = v_b/(1-beta_2**t)
+            theta_b = theta_b - eta*m_b_hat/(np.sqrt(v_b_hat)+epsilon) 
+        #Para w's    
+        for j in range(1000):
+            m_w = beta_1*m_w + (1-beta_1)*delta_nabla_w
+            v_w = beta_2*v_w + (1-beta_2)*delta_nabla_w**2
+            m_w_hat = m_w/(1-beta_1**t)
+            v_w_hat = v_b/(1-beta_2**t)
+            theta_w = theta_w - eta*m_w_hat/(np.sqrt(v_w_hat)+epsilon) 
+
         if test_data:
             test_data = list(test_data) #La convertimos en lista
             n_test = len(test_data)     #Obtenemos su longitud
@@ -133,6 +149,7 @@ class Network(object):
         self.biases = [b-(eta/len(mini_batch))*nb
                        for b, nb in zip(self.biases, nabla_b)]            #Actualizamos los biases, moviendo un poco los b's
 
+#-------------------------De aquí para abajo no se modifica----------------------------
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
         gradient for the cost function C_x.  ``nabla_b`` and
