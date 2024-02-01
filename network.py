@@ -74,7 +74,7 @@ class Network(object):
 #-----------------------No se modifica lo de arriba (en Adam)---------------------
 
     def Adam(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None, beta_1=0.9, beta_2=0.95, epsilon = 1e-8):  #-------Stochastic Gradient Descent-------
+            test_data=None, beta_1=0.9, beta_2=0.999, epsilon = 1e-8):  #-------Stochastic Gradient Descent-------
                               #self            --- Llamamos a nuestra clase 'self'
                               #training_data   --- Una lista de tuplas (x,y) donde ('espectativa','realidad') xd  
                               #epochs          --- Ciclos a repetir
@@ -206,7 +206,7 @@ class Network(object):
 
 def sigmoid(z):
     """The sigmoid function."""
-    return 1.0/(1.0+np.exp(-z))
+    return 1.0/(1.0+np.exp(np.float128(-z)))
 
 def sigmoid_prime(z):
     """Derivative of the sigmoid function."""
