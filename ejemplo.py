@@ -9,7 +9,7 @@ test_data = list(test_data)
 
 net=network.Network([784,30,10])
 
-net.SGD( training_data, 30, 10, eta=0.5, test_data=test_data)
+net.Adam( training_data, 30, 10, eta=0.5, test_data=test_data)
 
 archivo = open("red_prueba1.pkl",'wb')
 pickle.dump(net,archivo)
