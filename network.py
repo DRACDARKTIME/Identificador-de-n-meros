@@ -74,36 +74,13 @@ class Network(object):
 #-----------------------No se modifica lo de arriba (en Adam)---------------------
 
     def Adam(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None, beta_1=0.9, beta_2=0.95):  #-------Stochastic Gradient Descent-------
+            test_data=None, beta_1=0.9, beta_2=0.95, epsilon = 1e-8):  #-------Stochastic Gradient Descent-------
                               #self            --- Llamamos a nuestra clase 'self'
                               #training_data   --- Una lista de tuplas (x,y) donde ('espectativa','realidad') xd  
                               #epochs          --- Ciclos a repetir
                               #mini_batch_size --- Es el paso que hay en la selección de los datos "step"
                               #eta             --- Ritmo de aprendizaje
                               #test_data       --- Información de prueba  
-        epsilon = 1e-8
-        t=0
-        g=0
-        m_b=np.zeros_like(self.biases)
-        v_b=np.zeros_like(self.biases)
-        m_w=np.zeros_like(self.weights)
-        v_w=np.zeros_like(self.weights)
-        delta_nabla_b, delta_nabla_w = self.backprop(x, y)
-
-        for j in range(1000):
-        #Para b's
-            m_b = beta_1*m_b + (1-beta_1)*delta_nabla_b
-            v_b = beta_2*v_b + (1-beta_2)*delta_nabla_b**2
-            m_b_hat = m_b/(1-beta_1**t)
-            v_b_hat = v_b/(1-beta_2**t)
-            theta_b = theta_b - eta*m_b_hat/(np.sqrt(v_b_hat)+epsilon) #Estas son las nuevas b's
-        #Para w's    
-            m_w = beta_1*m_w + (1-beta_1)*delta_nabla_w
-            v_w = beta_2*v_w + (1-beta_2)*delta_nabla_w**2
-            m_w_hat = m_w/(1-beta_1**t)
-            v_w_hat = v_b/(1-beta_2**t)
-            theta_w = theta_w - eta*m_w_hat/(np.sqrt(v_w_hat)+epsilon) #Estos son los nuevos w's
-
         if test_data:
             test_data = list(test_data) #La convertimos en lista
             n_test = len(test_data)     #Obtenemos su longitud
@@ -130,23 +107,35 @@ class Network(object):
             else:
                 print("Epoch {0} complete".format(j))     #Solo se imprime la epoca en que se está
 
-    def update_mini_batch(self, mini_batch, eta):
+    def update_mini_batch(self, mini_batch, eta,beta_1=0.9, beta_2=0.95, epsilon = 1e-8):
         """Update the network's weights and biases by applying
         gradient descent using backpropagation to a single mini batch.
         The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
         is the learning rate."""
-        nabla_b = [np.zeros(b.shape) for b in self.biases]     #Crea una lista igual a self.biases pero con puros ceros
-        nabla_w = [np.zeros(w.shape) for w in self.weights]    #Crea una lista igual a self.weights pero con puros ceros
+        t=0
+        m_b= [np.zeros(b.shape) for b in self.biases] #Crea una lista igual a self.biases pero con puros ceros
+        v_b= [np.zeros(b.shape) for b in self.biases] #Crea una lista igual a self.biases pero con puros ceros
+        m_w= [np.zeros(w.shape) for w in self.weights]#Crea una lista igual a self.weights pero con puros ceros
+        v_w= [np.zeros(w.shape) for w in self.weights]#Crea una lista igual a self.weights pero con puros ceros
         for x, y in mini_batch:
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)            #Regresa el gradiente de la función de costo respecto de b y de a
-            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)] #Ahora nabla_b está llena de la suma de los valores
-                                                                          #nabla_b + delta_nabla_b
-            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)] #Ahora nabla_w está llena de la suma de los valores
-                                                                          #nabla_w + delta_nabla_w
-        self.weights = [w-(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.weights, nabla_w)]          #Actualizamos los pesos, moviendo un poco los w's
-        self.biases = [b-(eta/len(mini_batch))*nb
-                       for b, nb in zip(self.biases, nabla_b)]            #Actualizamos los biases, moviendo un poco los b's
+        #-----------------Usando Adam------------------------
+            t+=1
+        #Para b's
+            m_b = [beta_1*mb + (1-beta_1)*dnb for mb , dnb in zip(m_b,delta_nabla_b)]
+            v_b = [beta_2*vb + (1-beta_2)*dnb**2 for vb,dnb in zip(v_b,delta_nabla_b)]
+            m_b_hat = [mb/(1-beta_1**t) for mb in m_b]
+            v_b_hat = [vb/(1-beta_2**t) for vb in v_b]
+        #Para w's    
+            m_w = [beta_1*mw + (1-beta_1)*dnw for mw , dnw in zip(m_w,delta_nabla_w)]
+            v_w = [beta_2*vw + (1-beta_2)*dnw**2 for vw,dnw in zip(v_w,delta_nabla_w)]
+            m_w_hat = [mw/(1-beta_1**t) for mw in m_w]
+            v_w_hat = [vw/(1-beta_2**t) for vw in v_w]
+
+        self.weights = [w- eta*mwh/(np.sqrt(vwh)+epsilon)
+                        for w, mwh,vwh in zip(self.weights, m_w_hat,v_w_hat)]          #Actualizamos los pesos, moviendo un poco los w's
+        self.biases = [b-eta*mbh/(np.sqrt(vbh)+epsilon)
+                       for b, mbh , vbh in zip(self.biases, m_b_hat,v_b_hat)]            #Actualizamos los biases, moviendo un poco los b's
 
 #-------------------------De aquí para abajo no se modifica----------------------------
     def backprop(self, x, y):
