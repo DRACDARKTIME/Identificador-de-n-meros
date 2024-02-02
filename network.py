@@ -107,14 +107,13 @@ class Network(object):
             else:
                 print("Epoch {0} complete".format(j))     #Solo se imprime la epoca en que se está
         #------------Imprimimos el valor de costo----------#
-        print("Valor de la función de costo: {0}".format(self.valor_costo_training_data(_
-                        training_data=training_data)))
+        print("Valor de la función de costo: {0}".format(self.valor_costo_training_data(training_data=training_data)))
         #------------Ahora guardamos los valores para poder graficarlos--------------
         costo = []
         epoch = []
         costo.append(self.valor_costo_training_data)
         epoch.append(j)
-        plt.plot(y=costo,x=epoch, 'r', label='costo_Adam+cross_entropy')
+        plt.plot(y=costo,x=epoch,color= 'red', label='costo_Adam+cross_entropy')
         plt.show()
         plt.ylabel("Costo")
         plt.xlabel("Epochs")
@@ -153,12 +152,11 @@ class Network(object):
     def valor_costo_training_data(self,training_data):
         Costo = 0
         for w, b in zip(self.biases, self.weights):
-            z = np.dot(w,activation) + b
             suma=0
             for x,y in training_data:
-                a = sigmoid(z)
+                a = sigmoid(np.dot(w,x) + b)
                 suma += y*np.log(a) + (1-y)*np.log(1-a)
-        Costo+= suma
+            Costo+= suma
         return Costo        
 
 
@@ -224,7 +222,7 @@ class Network(object):
         return sum(int(x == y) for (x, y) in test_results) #Nos da la cantidad de datos que coincidieron, 
                                                            #Simplemento compara los indices y cuenta los que sí coinciden.
     def funcion_costo(self,output_activations,y):
-        Costo_x_j = y*np.log(output_activations)+(1-y)np.log(1-output_activations)
+        Costo_x_j = y*np.log(output_activations)+(1-y)*np.log(1-output_activations)
 
         return Costo_x_j
 
