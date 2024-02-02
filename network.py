@@ -11,6 +11,7 @@ and omits many desirable features.
 #-------- Libraries --------#
 
 import random
+import matplotlib.pyplot as plt
     # Standard library
 
 import numpy as np
@@ -71,8 +72,6 @@ class Network(object):
                                             #después se vuelve a calcular lo mismo pero para la siguiente a^{2}
                                         #El ciclo se repite hasta tener la activación final
         return a                        #Regresa la activación final de la red.
-#-----------------------No se modifica lo de arriba (en Adam)---------------------
-
     def Adam(self, training_data, epochs, mini_batch_size, eta,
             test_data=None, beta_1=0.9, beta_2=0.999, epsilon = 1e-8):  #-------Stochastic Gradient Descent-------
                               #self            --- Llamamos a nuestra clase 'self'
@@ -101,12 +100,26 @@ class Network(object):
                                                         #La cual nos mueve un poco los pesos y los biases
             if test_data:
                 print("Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test)) #Imprimimos el número de época en que estamos,
-                                                          #el valor de evaluate(función definida abajo) y
-                                                          #la longitud de test_data
+                    j, self.evaluate(test_data), n_test)) 
+                                                            #Imprimimos el número de época en que estamos,
+                                                            #el valor de evaluate(función definida abajo) y
+                                                            #la longitud de test_data
             else:
                 print("Epoch {0} complete".format(j))     #Solo se imprime la epoca en que se está
-
+        #------------Imprimimos el valor de costo----------#
+        print("Valor de la función de costo: {0}".format(self.valor_costo_training_data(_
+                        training_data=training_data)))
+        #------------Ahora guardamos los valores para poder graficarlos--------------
+        costo = []
+        epoch = []
+        costo.append(self.valor_costo_training_data)
+        epoch.append(j)
+        plt.plot(y=costo,x=epoch, 'r', label='costo_Adam+cross_entropy')
+        plt.show()
+        plt.ylabel("Costo")
+        plt.xlabel("Epochs")
+        plt.savefig("Adam+Cross_entropy.jpg")
+#-----------------------No se modifica lo de arriba (en Adam)---------------------
     def update_mini_batch(self, mini_batch, eta,beta_1=0.9, beta_2=0.95, epsilon = 1e-8):
         """Update the network's weights and biases by applying
         gradient descent using backpropagation to a single mini batch.
@@ -137,6 +150,20 @@ class Network(object):
         self.biases = [b-eta*mbh/(np.sqrt(vbh)+epsilon)
                        for b, mbh , vbh in zip(self.biases, m_b_hat,v_b_hat)]            #Actualizamos los biases, moviendo un poco los b's
 
+    def valor_costo_training_data(self,training_data):
+        Costo = 0
+        for w, b in zip(self.biases, self.weights):
+            z = np.dot(w,activation) + b
+            suma=0
+            for x,y in training_data:
+                a = sigmoid(z)
+                suma += y*np.log(a) + (1-y)*np.log(1-a)
+        Costo+= suma
+        return Costo        
+
+
+
+
 #-------------------------De aquí para abajo no se modifica----------------------------
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
@@ -156,7 +183,7 @@ class Network(object):
             activations.append(activation)    #Añadimos elementos a activations
             #zs es una lista donde guardamos todas las z's de nuestra red
             #activations es una lista donde guardamos todas las a's de nuestra red
-
+                    
         #-----backward pass-----
         delta = self.cost_derivative(activations[-1], y)                #Calculamos la ultima delta usando Cross-entropy
                                                                         #  $\delta^{L} = a^{L} - y$                                                                               
@@ -196,6 +223,12 @@ class Network(object):
         
         return sum(int(x == y) for (x, y) in test_results) #Nos da la cantidad de datos que coincidieron, 
                                                            #Simplemento compara los indices y cuenta los que sí coinciden.
+    def funcion_costo(self,output_activations,y):
+        Costo_x_j = y*np.log(output_activations)+(1-y)np.log(1-output_activations)
+
+        return Costo_x_j
+
+
 
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
