@@ -39,7 +39,10 @@ class Network(object):
             #Esta lista tiene como elementos a arrays,
                 #cada array pertenece a una capa de la red, sin contar la capa de input
             #Cada array tiene una 'b' random para cada neurona de cada capa  
-        self.weights = [np.random.randn(y, x)
+        mu = 0
+        n = sum(x*y for x,y in zip(sizes[:-1], sizes[1:]))
+        sigma = 1/np.sqrt(n)
+        self.weights = [np.random.default_rng().normal(mu, sigma, (y,x))
                         for x, y in zip(sizes[:-1], sizes[1:])]
             #Ahora asignamos un peso w aleatorio --entre cada par-- de neuronas 
             #Se crea un primer array con los pesos que unen a cada neurona entre la capa uno y dos
@@ -86,6 +89,8 @@ class Network(object):
 
         training_data = list(training_data) #La convertimos en lista
         n = len(training_data)              #Obtenemos su longitud
+        funcion_costo = []
+        numero_epoch = []
         for j in range(epochs):
             random.shuffle(training_data)   #Revolvemos el orden de los datos en training_data
 
@@ -107,17 +112,16 @@ class Network(object):
             else:
                 print("Epoch {0} complete".format(j))     #Solo se imprime la epoca en que se está
         #------------Imprimimos el valor de costo----------#
-        print("Valor de la función de costo: {0}".format(self.valor_costo_training_data(training_data=training_data)))
+            valor_costo = self.valor_costo_training_data(training_data=training_data)
+            numero_epoch.append(j)
+            funcion_costo.append(valor_costo)
+            print("Valor de la función de costo: {0}".format(valor_costo))
         #------------Ahora guardamos los valores para poder graficarlos--------------
-        costo = []
-        epoch = []
-        costo.append(self.valor_costo_training_data)
-        epoch.append(j)
-        plt.plot(y=costo,x=epoch,color= 'red', label='costo_Adam+cross_entropy')
-        plt.show()
+        plt.plot(np.array(numero_epoch),np.array(funcion_costo),color= 'red', label='costo_Adam+cross_entropy')
         plt.ylabel("Costo")
         plt.xlabel("Epochs")
         plt.savefig("Adam+Cross_entropy.jpg")
+        plt.show()
 #-----------------------No se modifica lo de arriba (en Adam)---------------------
     def update_mini_batch(self, mini_batch, eta,beta_1=0.9, beta_2=0.95, epsilon = 1e-8):
         """Update the network's weights and biases by applying
@@ -150,14 +154,20 @@ class Network(object):
                        for b, mbh , vbh in zip(self.biases, m_b_hat,v_b_hat)]            #Actualizamos los biases, moviendo un poco los b's
 
     def valor_costo_training_data(self,training_data):
-        Costo = 0
-        for w, b in zip(self.biases, self.weights):
-            suma=0
-            for x,y in training_data:
-                a = sigmoid(np.dot(w,x) + b)
-                suma += y*np.log(a) + (1-y)*np.log(1-a)
-            Costo+= suma
-        return Costo        
+        epsilon = 1e-8
+        suma_j = 0                     #Iniciadores de sumas
+        n = len(list(training_data))   #Obtenemos la cantidad de inputs
+        for x,y in training_data:      #Tomamos un elemento de training_data
+            a = self.feedforward(x)    #La a son todas las activaciones finales
+                                            #es un array con elementos $a^{L}_{j}$
+            suma_j += sum( yv*np.log(av+epsilon) + (1-yv)*np.log(1-av+ epsilon) for av,yv in zip(a,y)) 
+                                        #Calculamos
+                                        #la suma de todas las neuronas con el 
+                                        #primer imput, esta sería la suma en j.
+                                        #Al ir pasando el for, la suma se acumula
+                                        #y obtenemos la suma total.
+        return suma_j*(-1/n)    #Esta es la suma final, el valor de costo      
+    
 
 
 
