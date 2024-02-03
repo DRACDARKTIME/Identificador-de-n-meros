@@ -247,7 +247,7 @@ class Network(object):
 
 def sigmoid(z):
     """The sigmoid function."""
-    return 1.0/(1.0+np.exp(np.float128(-z)))
+    return 1.0/(1.0+np.exp(-z))
 
 def sigmoid_prime(z):
     """Derivative of the sigmoid function."""
