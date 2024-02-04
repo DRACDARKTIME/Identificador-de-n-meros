@@ -231,13 +231,6 @@ class Network(object):
         
         return sum(int(x == y) for (x, y) in test_results) #Nos da la cantidad de datos que coincidieron, 
                                                            #Simplemento compara los indices y cuenta los que sí coinciden.
-    def funcion_costo(self,output_activations,y):
-        Costo_x_j = y*np.log(output_activations)+(1-y)*np.log(1-output_activations)
-
-        return Costo_x_j
-
-
-
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
