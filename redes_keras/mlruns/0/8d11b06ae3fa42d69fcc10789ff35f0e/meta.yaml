@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/8d11b06ae3fa42d69fcc10789ff35f0e/artifacts
+end_time: 1707676360983
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 8d11b06ae3fa42d69fcc10789ff35f0e
+run_name: agreeable-moose-49
+run_uuid: 8d11b06ae3fa42d69fcc10789ff35f0e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707675970123
+status: 3
+tags: []
+user_id: dracdarktime

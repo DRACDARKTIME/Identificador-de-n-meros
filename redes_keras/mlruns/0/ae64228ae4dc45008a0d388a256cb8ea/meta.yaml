@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/ae64228ae4dc45008a0d388a256cb8ea/artifacts
+end_time: 1707680006098
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ae64228ae4dc45008a0d388a256cb8ea
+run_name: beautiful-pig-991
+run_uuid: ae64228ae4dc45008a0d388a256cb8ea
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707679824433
+status: 3
+tags: []
+user_id: dracdarktime

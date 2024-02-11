@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/b8973fa3dbdd459bb781a93eb2a7611d/artifacts
+end_time: 1707679726097
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: b8973fa3dbdd459bb781a93eb2a7611d
+run_name: agreeable-croc-878
+run_uuid: b8973fa3dbdd459bb781a93eb2a7611d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707679535858
+status: 3
+tags: []
+user_id: dracdarktime

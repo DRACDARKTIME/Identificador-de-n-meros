@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/9631e6bf77a6436a90a670bc013a0646/artifacts
+end_time: 1707680442060
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9631e6bf77a6436a90a670bc013a0646
+run_name: casual-bird-125
+run_uuid: 9631e6bf77a6436a90a670bc013a0646
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707680437154
+status: 4
+tags: []
+user_id: dracdarktime

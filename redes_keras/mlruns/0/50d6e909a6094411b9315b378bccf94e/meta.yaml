@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/50d6e909a6094411b9315b378bccf94e/artifacts
+end_time: 1707681792014
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 50d6e909a6094411b9315b378bccf94e
+run_name: treasured-duck-790
+run_uuid: 50d6e909a6094411b9315b378bccf94e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707680784451
+status: 3
+tags: []
+user_id: dracdarktime

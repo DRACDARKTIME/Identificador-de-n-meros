@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/1109027cf7a54c9dbc56b2c172e32ff5/artifacts
+end_time: 1707684208973
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 1109027cf7a54c9dbc56b2c172e32ff5
+run_name: carefree-crab-203
+run_uuid: 1109027cf7a54c9dbc56b2c172e32ff5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707683198574
+status: 3
+tags: []
+user_id: dracdarktime

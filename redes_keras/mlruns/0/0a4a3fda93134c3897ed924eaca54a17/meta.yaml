@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/0a4a3fda93134c3897ed924eaca54a17/artifacts
+end_time: 1707675856132
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 0a4a3fda93134c3897ed924eaca54a17
+run_name: puzzled-boar-235
+run_uuid: 0a4a3fda93134c3897ed924eaca54a17
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707675464154
+status: 3
+tags: []
+user_id: dracdarktime
