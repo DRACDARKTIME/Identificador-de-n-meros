@@ -1,2 +1,4 @@
 *.jpg
 *.pkl
+mlruns
+__pycache__
