@@ -1,0 +1,15 @@
+artifact_uri: file:///home/dracdarktime/Documents/ESCUELA/Python_Projects/redes/redes_keras/mlruns/0/450858a4a3f44aa286c26b9a85d0642e/artifacts
+end_time: 1707662080277
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 450858a4a3f44aa286c26b9a85d0642e
+run_name: enchanting-panda-597
+run_uuid: 450858a4a3f44aa286c26b9a85d0642e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707661651960
+status: 3
+tags: []
+user_id: dracdarktime
