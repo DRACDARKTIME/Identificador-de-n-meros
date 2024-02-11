@@ -11,8 +11,8 @@ import mlflow
 learning_rate = 0.001
 epochs = 30
 batch_size = 10
-beta_1 = 0.9
-beta_2 = 0.999
+beta_1 = 0.09
+beta_2 = 0.9999
 epsilon= 1e-7
 modelo = 'Adam'
 #------------------------------------Datos del modelo-----------------------------------------
@@ -36,7 +36,7 @@ model = Sequential()
 #Capas
 model.add(Dense(200, activation='sigmoid', input_shape=(784,)))
 #model.add(Dropout(0.2))
-#model.add(Dense(512, activation='relu'))
+model.add(Dense(100, activation='relu'))
 #model.add(Dense(num_classes, activation='softmax'))
 model.add(Dense(num_classes, activation='sigmoid'))
 model.summary()
@@ -80,6 +80,6 @@ ax[1].set_xlabel('epoch')
 ax[1].legend()
 
 fig.tight_layout()
-plt.savefig(f"Modelo:{modelo}.jpg")
+plt.savefig(f"Modelo:{modelo},beta_1:{beta_1}.jpg")
 plt.show()
 #en consola: mlflow ui
