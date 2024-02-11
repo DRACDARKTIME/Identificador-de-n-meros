@@ -8,12 +8,12 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping #Guarda la mejor red
 import matplotlib.pyplot as plt
 import mlflow
 #------------------------------------Parámetros-----------------------------------------------
-learning_rate = 0.05
+learning_rate = 0.001
 epochs = 30
 batch_size = 10
 beta_1 = 0.9
 beta_2 = 0.999
-epsilon= 1e-8
+epsilon= 1e-7
 modelo = 'Adam'
 #------------------------------------Datos del modelo-----------------------------------------
 #Activa el servidor
@@ -34,7 +34,7 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 #------------------------------------Modelo-----------------------------------------
 model = Sequential()
 #Capas
-model.add(Dense(30, activation='sigmoid', input_shape=(784,)))
+model.add(Dense(200, activation='sigmoid', input_shape=(784,)))
 #model.add(Dropout(0.2))
 #model.add(Dense(512, activation='relu'))
 #model.add(Dense(num_classes, activation='softmax'))
