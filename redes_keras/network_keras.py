@@ -16,7 +16,7 @@ beta_1 = 0.09
 beta_2 = 0.9999
 epsilon= 1e-7
 modelo = 'Adam'
-lambda1 = 0.0002
+lambda2 = 0.001
 #------------------------------------Datos del modelo-----------------------------------------
 #Activa el servidor
 mlflow.tensorflow.autolog()    
@@ -36,7 +36,7 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 #------------------------------------Modelo-----------------------------------------
 model = Sequential()
 #Regularizadores
-kernel_regularizer = l1(lambda1)
+kernel_regularizer = l2(lambda2)
 #Capas
 model.add(Dense(200, activation='sigmoid', input_shape=(784,),kernel_regularizer=kernel_regularizer))
 #model.add(Dropout(0.2))
@@ -83,6 +83,6 @@ ax[1].set_ylabel('loss')
 ax[1].set_xlabel('epoch')
 ax[1].legend()
 fig.tight_layout()
-plt.savefig(f"Modelo:{modelo}, l1, lambda={lambda1}.jpg")
+plt.savefig(f"Modelo:{modelo}, l2, lambda2={lambda2}.jpg")
 plt.show()
 #en consola: mlflow ui
