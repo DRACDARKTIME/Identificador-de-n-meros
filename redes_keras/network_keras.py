@@ -4,6 +4,7 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import RMSprop, SGD, Adam
+from tensorflow.keras.regularizers import l1,l2,l1_l2 
 from keras.callbacks import ModelCheckpoint, EarlyStopping #Guarda la mejor red
 import matplotlib.pyplot as plt
 import mlflow
@@ -15,6 +16,7 @@ beta_1 = 0.09
 beta_2 = 0.9999
 epsilon= 1e-7
 modelo = 'Adam'
+lambda1 = 0.0002
 #------------------------------------Datos del modelo-----------------------------------------
 #Activa el servidor
 mlflow.tensorflow.autolog()    
@@ -33,10 +35,12 @@ y_trainc = keras.utils.to_categorical(y_train, num_classes)
 y_testc = keras.utils.to_categorical(y_test, num_classes)
 #------------------------------------Modelo-----------------------------------------
 model = Sequential()
+#Regularizadores
+kernel_regularizer = l1(lambda1)
 #Capas
-model.add(Dense(200, activation='sigmoid', input_shape=(784,)))
+model.add(Dense(200, activation='sigmoid', input_shape=(784,),kernel_regularizer=kernel_regularizer))
 #model.add(Dropout(0.2))
-model.add(Dense(100, activation='relu'))
+model.add(Dense(100, activation='relu',kernel_regularizer=kernel_regularizer))
 #model.add(Dense(num_classes, activation='softmax'))
 model.add(Dense(num_classes, activation='sigmoid'))
 model.summary()
@@ -78,8 +82,7 @@ ax[1].plot(history.history['val_accuracy'],'b', label='val_accuracy')
 ax[1].set_ylabel('loss')
 ax[1].set_xlabel('epoch')
 ax[1].legend()
-
 fig.tight_layout()
-plt.savefig(f"Modelo:{modelo}.jpg")
+plt.savefig(f"Modelo:{modelo}, l1, lambda={lambda1}.jpg")
 plt.show()
 #en consola: mlflow ui
