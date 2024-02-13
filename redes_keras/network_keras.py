@@ -16,9 +16,9 @@ beta_1 = 0.09
 beta_2 = 0.9999
 epsilon= 1e-7
 modelo = 'Adam'
-#lambda1 = 1e-5
-#lambda2 = 1e-5
-porcentaje=0.35
+lambda1 = 1e-5
+lambda2 = 1e-5
+porcentaje=0.20
 #------------------------------------Datos del modelo-----------------------------------------
 #Activa el servidor
 mlflow.tensorflow.autolog()    
@@ -38,11 +38,11 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 #------------------------------------Modelo-----------------------------------------
 model = Sequential()
 #Regularizadores
-#kernel_regularizer = l1_l2(lambda1,lambda2)
+kernel_regularizer = l1_l2(lambda1,lambda2)
 #Capas
-model.add(Dense(200, activation='sigmoid', input_shape=(784,)))
+model.add(Dense(200, activation='sigmoid', input_shape=(784,),kernel_regularizer=kernel_regularizer))
 model.add(Dropout(porcentaje))
-model.add(Dense(100, activation='relu'))
+model.add(Dense(100, activation='relu',kernel_regularizer=kernel_regularizer))
 model.add(Dropout(porcentaje))
 #model.add(Dense(num_classes, activation='softmax'))
 model.add(Dense(num_classes, activation='sigmoid'))
@@ -86,6 +86,6 @@ ax[1].set_ylabel('loss')
 ax[1].set_xlabel('epoch')
 ax[1].legend()
 fig.tight_layout()
-plt.savefig(f"Modelo:{modelo}, Dropout:{porcentaje}.jpg")
+plt.savefig(f"Modelo:{modelo}, Dropout:{porcentaje}, lambda1={lambda1},lambda2={lambda2}, epoca:{epochs}.jpg")
 plt.show()
 #en consola: mlflow ui
