@@ -10,14 +10,15 @@ import matplotlib.pyplot as plt
 import mlflow
 #------------------------------------Parámetros-----------------------------------------------
 learning_rate = 0.001
-epochs = 60
+epochs = 30
 batch_size = 10
 beta_1 = 0.09
 beta_2 = 0.9999
 epsilon= 1e-7
 modelo = 'Adam'
-lambda1 = 1e-5
-lambda2 = 1e-5
+#lambda1 = 1e-5
+#lambda2 = 1e-5
+porcentaje=0.35
 #------------------------------------Datos del modelo-----------------------------------------
 #Activa el servidor
 mlflow.tensorflow.autolog()    
@@ -37,11 +38,12 @@ y_testc = keras.utils.to_categorical(y_test, num_classes)
 #------------------------------------Modelo-----------------------------------------
 model = Sequential()
 #Regularizadores
-kernel_regularizer = l1_l2(lambda1,lambda2)
+#kernel_regularizer = l1_l2(lambda1,lambda2)
 #Capas
-model.add(Dense(200, activation='sigmoid', input_shape=(784,),kernel_regularizer=kernel_regularizer))
-#model.add(Dropout(0.2))
-model.add(Dense(100, activation='relu',kernel_regularizer=kernel_regularizer))
+model.add(Dense(200, activation='sigmoid', input_shape=(784,)))
+model.add(Dropout(porcentaje))
+model.add(Dense(100, activation='relu'))
+model.add(Dropout(porcentaje))
 #model.add(Dense(num_classes, activation='softmax'))
 model.add(Dense(num_classes, activation='sigmoid'))
 model.summary()
@@ -84,6 +86,6 @@ ax[1].set_ylabel('loss')
 ax[1].set_xlabel('epoch')
 ax[1].legend()
 fig.tight_layout()
-plt.savefig(f"Modelo:{modelo}, l1_l2, lambda={lambda1},lambda2={lambda2}.jpg")
+plt.savefig(f"Modelo:{modelo}, Dropout:{porcentaje}.jpg")
 plt.show()
 #en consola: mlflow ui
